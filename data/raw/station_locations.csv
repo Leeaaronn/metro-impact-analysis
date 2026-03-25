@@ -1,0 +1,27 @@
+station_name,line,lat,lon,opened_date,is_foothill_2016
+Arcadia,A,34.1417,-118.0287,2016-03-05,True
+Monrovia,A,34.1356,-118.0019,2016-03-05,True
+Duarte/City of Hope,A,34.1311,-117.9712,2016-03-05,True
+Irwindale,A,34.1283,-117.9344,2016-03-05,True
+Azusa Downtown,A,34.136,-117.9068,2016-03-05,True
+APU/Citrus College,A,34.1363,-117.892,2016-03-05,True
+Sierra Madre Villa,A,34.1484,-118.0576,2003-07-26,False
+Allen,A,34.1477,-118.1027,2003-07-26,False
+Lake,A,34.146,-118.1309,2003-07-26,False
+Del Mar,A,34.1454,-118.1509,2003-07-26,False
+Memorial Park,A,34.1477,-118.1579,2003-07-26,False
+Union Station,B,34.056,-118.2356,1993-01-30,False
+Civic Center/Grand Park,B,34.0554,-118.2429,1993-01-30,False
+Pershing Square,B,34.0493,-118.2493,1993-01-30,False
+7th Street/Metro Center,B,34.0484,-118.2588,1993-01-30,False
+Wilshire/Vermont,B,34.0623,-118.2924,1996-06-22,False
+Hollywood/Highland,B,34.1019,-118.3388,1999-06-12,False
+North Hollywood,B,34.1679,-118.3777,2000-06-24,False
+Norwalk,C,33.9041,-118.0826,1995-08-12,False
+Lakewood,C,33.8539,-118.1234,1995-08-12,False
+Hawthorne/Lennox,C,33.9164,-118.3454,1995-08-12,False
+Aviation/LAX,C,33.929,-118.3759,1995-08-12,False
+Redondo Beach,C,33.8831,-118.3759,1995-08-12,False
+Koreatown/Wilshire,D,34.0594,-118.3013,1996-06-22,False
+Wilshire/Western,D,34.0616,-118.309,1996-06-22,False
+Wilshire/Normandie,D,34.0609,-118.2989,1996-06-22,False

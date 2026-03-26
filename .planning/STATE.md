@@ -5,11 +5,11 @@
 - Project scaffold created: PROJECT.md, ROADMAP.md, REQUIREMENTS.md, CLAUDE.md, STATE.md
 - Plan 01-01: Acquired raw ridership data (1,323 rows, 2009–2025) and station locations (26 stations)
 - Plan 01-02: Cleaned datasets produced — 944 rail ridership rows, 26 stations (6 Foothill treatment)
+- Plan 02-01: EDA notebook complete — 6 publication-quality figures (trends, treatment/control, distributions, boxplots, normality tests, correlation heatmap). Shapiro-Wilk results ready for Phase 3 test selection.
 
 ## What's Next
 
-- Plan 01-03: Data validation tests (tests/test_data.py) and data_inventory.md
-- Phase 2: Exploratory Data Analysis
+- Phase 3: Statistical Testing (DiD analysis)
 
 ## Blockers
 

@@ -16,7 +16,7 @@
 **Plans:** 1 plan
 
 Plans:
-- [ ] 02-01-PLAN.md — Add distribution analysis, normality checks, and correlation heatmap to complete EDA notebook
+- [x] 02-01-PLAN.md — Add distribution analysis, normality checks, and correlation heatmap to complete EDA notebook
 
 - [ ] Task 1: Ridership trends — plot monthly ridership for Gold Line vs other lines (2012–2025), annotate March 2016 extension date
 - [ ] Task 2: Summary statistics table — pre vs post extension period for treatment and control groups

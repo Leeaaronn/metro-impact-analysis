@@ -11,6 +11,13 @@
 
 ## Phase 2: Exploratory Data Analysis
 
+**Goal:** Complete EDA with 5+ publication-quality figures covering trends, distributions, normality, and correlations.
+
+**Plans:** 1 plan
+
+Plans:
+- [ ] 02-01-PLAN.md — Add distribution analysis, normality checks, and correlation heatmap to complete EDA notebook
+
 - [ ] Task 1: Ridership trends — plot monthly ridership for Gold Line vs other lines (2012–2025), annotate March 2016 extension date
 - [ ] Task 2: Summary statistics table — pre vs post extension period for treatment and control groups
 - [ ] Task 3: Distribution analysis — histograms, boxplots, normality checks (Shapiro-Wilk) for key variables

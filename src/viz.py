@@ -290,3 +290,58 @@ def plot_boxplot_comparison(
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:,.0f}"))
     fig.tight_layout()
     return fig
+
+
+def plot_correlation_heatmap(
+    df: pd.DataFrame,
+    line_ids: Optional[list[str]] = None,
+    metric: str = "avg_daily_boardings",
+    title: str = "Line-to-Line Ridership Correlation (Monthly)",
+) -> plt.Figure:
+    """Plot a heatmap of pairwise Pearson correlations between line ridership series.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Clean ridership data with 'date', 'line_id', and metric columns.
+    line_ids : list[str], optional
+        Lines to include. Defaults to gold, a_line, red, green, expo.
+    metric : str
+        Column name for values.
+    title : str
+        Plot title.
+
+    Returns
+    -------
+    plt.Figure
+    """
+    set_default_theme()
+    if line_ids is None:
+        line_ids = ["gold", "a_line", "red", "green", "expo"]
+
+    pivot = df[df["line_id"].isin(line_ids)].pivot_table(
+        index="date", columns="line_id", values=metric
+    )
+    # Rename columns to human-readable names using LINE_STYLES
+    pivot.columns = [LINE_STYLES.get(c, (c, None))[0] for c in pivot.columns]
+
+    corr = pivot.corr()
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    mask = np.triu(np.ones_like(corr, dtype=bool), k=1)
+    sns.heatmap(
+        corr,
+        mask=mask,
+        annot=True,
+        fmt=".2f",
+        cmap="coolwarm",
+        center=0,
+        vmin=-1,
+        vmax=1,
+        square=True,
+        ax=ax,
+        linewidths=0.5,
+    )
+    ax.set_title(title, fontweight="bold")
+    fig.tight_layout()
+    return fig

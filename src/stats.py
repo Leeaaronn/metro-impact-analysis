@@ -11,6 +11,7 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 from scipy import stats
+import statsmodels.api as sm
 
 
 @dataclass
@@ -314,5 +315,159 @@ def paired_ttest(
         ci_upper=ci_upper,
         effect_size=d,
         effect_size_type="Cohen's d (paired)",
+        interpretation=interpretation,
+    )
+
+
+def wilcoxon_signed_rank(
+    before: pd.Series,
+    after: pd.Series,
+    label: str = "Pre vs Post",
+) -> TestResult:
+    """Wilcoxon signed-rank test (non-parametric paired pre/post comparison).
+
+    Parameters
+    ----------
+    before : pd.Series
+        Pre-period values.
+    after : pd.Series
+        Post-period values.
+    label : str
+        Label for the comparison.
+
+    Returns
+    -------
+    TestResult
+    """
+    a, b = before.dropna().values, after.dropna().values
+    n = min(len(a), len(b))
+    a, b = a[:n], b[:n]
+
+    stat, p = stats.wilcoxon(b - a, alternative="two-sided")
+    diff = b - a
+    mean_diff = np.mean(diff)
+    std_diff = np.std(diff, ddof=1)
+    d = mean_diff / std_diff if std_diff > 0 else 0.0
+
+    # CI from percentiles of pairwise differences
+    ci_lower, ci_upper = np.percentile(diff, [2.5, 97.5])
+
+    interpretation = (
+        f"{label}: {_interpret_p(p)}; "
+        f"median change = {np.median(diff):,.1f}; "
+        f"Cohen's d = {d:.3f} ({_interpret_d(d)} effect)"
+    )
+    return TestResult(
+        test_name=f"Wilcoxon signed-rank ({label})",
+        statistic=stat,
+        p_value=p,
+        ci_lower=ci_lower,
+        ci_upper=ci_upper,
+        effect_size=d,
+        effect_size_type="Cohen's d (paired)",
+        interpretation=interpretation,
+    )
+
+
+@dataclass
+class DiDResult:
+    """Container for difference-in-differences regression results."""
+
+    did_coefficient: float
+    did_se: float
+    did_p_value: float
+    did_ci_lower: float
+    did_ci_upper: float
+    treatment_coefficient: float
+    post_coefficient: float
+    intercept: float
+    r_squared: float
+    r_squared_adj: float
+    n_obs: int
+    summary_text: str
+    interpretation: str
+
+    def to_dict(self) -> dict:
+        return {
+            "DiD Coefficient (Treatment x Post)": f"{self.did_coefficient:,.1f}",
+            "Std. Error": f"{self.did_se:,.1f}",
+            "p-value": f"{self.did_p_value:.4f}",
+            "95% CI": f"[{self.did_ci_lower:,.1f}, {self.did_ci_upper:,.1f}]",
+            "Treatment Effect": f"{self.treatment_coefficient:,.1f}",
+            "Post Effect": f"{self.post_coefficient:,.1f}",
+            "R-squared": f"{self.r_squared:.4f}",
+            "R-squared (adj)": f"{self.r_squared_adj:.4f}",
+            "N": self.n_obs,
+            "Interpretation": self.interpretation,
+        }
+
+
+def did_regression(
+    df: pd.DataFrame,
+    outcome_col: str = "avg_daily_boardings",
+    treatment_col: str = "is_treatment",
+    post_col: str = "is_post",
+    label: str = "DiD",
+) -> DiDResult:
+    """Run OLS difference-in-differences regression.
+
+    Model: Y = b0 + b1*Treatment + b2*Post + b3*(Treatment x Post) + e
+
+    The coefficient b3 is the DiD estimator — the causal effect of the
+    treatment on the outcome, net of group and time fixed effects.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Panel data with outcome, treatment indicator, and post indicator.
+    outcome_col : str
+        Column name for the dependent variable.
+    treatment_col : str
+        Column name for the treatment group dummy (1 = treatment).
+    post_col : str
+        Column name for the post-period dummy (1 = post).
+    label : str
+        Label for reporting.
+
+    Returns
+    -------
+    DiDResult
+    """
+    reg_df = df[[outcome_col, treatment_col, post_col]].dropna().copy()
+    reg_df[treatment_col] = reg_df[treatment_col].astype(int)
+    reg_df[post_col] = reg_df[post_col].astype(int)
+    reg_df["interaction"] = reg_df[treatment_col] * reg_df[post_col]
+
+    X = sm.add_constant(reg_df[[treatment_col, post_col, "interaction"]])
+    y = reg_df[outcome_col]
+    model = sm.OLS(y, X).fit(cov_type="HC1")
+
+    did_coef = model.params["interaction"]
+    did_se = model.bse["interaction"]
+    did_p = model.pvalues["interaction"]
+    ci = model.conf_int().loc["interaction"]
+
+    sig = _interpret_p(did_p)
+    direction = "increased" if did_coef > 0 else "decreased"
+
+    interpretation = (
+        f"{label}: The extension {direction} Gold Line ridership by "
+        f"{abs(did_coef):,.0f} avg daily boardings ({sig}). "
+        f"95% CI: [{ci[0]:,.0f}, {ci[1]:,.0f}]."
+    )
+
+    return DiDResult(
+        did_coefficient=did_coef,
+        did_se=did_se,
+        did_p_value=did_p,
+        did_ci_lower=ci[0],
+        did_ci_upper=ci[1],
+        treatment_coefficient=model.params[treatment_col],
+        post_coefficient=model.params[post_col],
+        intercept=model.params["const"],
+        r_squared=model.rsquared,
+        r_squared_adj=model.rsquared_adj,
+        n_obs=int(model.nobs),
+        summary_text=model.summary().as_text(),
         interpretation=interpretation,
     )

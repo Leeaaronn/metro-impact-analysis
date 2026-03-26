@@ -4,7 +4,8 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebSearch",
       "Bash(python:*)",
-      "Bash(ls .planning/*.md)"
+      "Bash(ls .planning/*.md)",
+      "Bash(pip install:*)"
     ]
   }
 }

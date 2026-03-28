@@ -17,13 +17,9 @@ a large and statistically significant effect that is robust to alternative speci
 ## Setup
 
 ```bash
-git clone https://github.com/<your-username>/metro-impact-analysis.git
-cd metro-impact-analysis
-python -m pip install -r requirements.txt
-make all    # downloads data, runs tests, executes notebook
+pip install -r requirements.txt
+make all
 ```
-
-Requires Python 3.9+.
 
 ## Project Structure
 
@@ -47,23 +43,8 @@ requirements.txt
 
 ## Tech Stack
 
-| Library | Role |
-|---------|------|
-| pandas / numpy | Data wrangling and computation |
-| scipy / statsmodels | Statistical tests and OLS regression |
-| seaborn / matplotlib | Visualization |
-| pytest | Testing |
-| jupyter / nbconvert | Notebook execution and reproducibility |
+Python, Pandas, SciPy, Statsmodels, Seaborn, Matplotlib, Pytest, Jupyter
 
-## Testing
+## Contact
 
-```bash
-make test       # runs pytest
-make notebook   # executes notebook top-to-bottom
-```
-
-Both commands must pass with zero errors.
-
-## License
-
-MIT
+**Aaron Lee** — [github.com/Leeaaronn](https://github.com/Leeaaronn) — alee190@csu.fullerton.edu

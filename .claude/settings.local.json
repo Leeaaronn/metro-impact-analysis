@@ -5,7 +5,10 @@
       "WebSearch",
       "Bash(python:*)",
       "Bash(ls .planning/*.md)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

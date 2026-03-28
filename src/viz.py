@@ -22,6 +22,8 @@ def set_default_theme() -> None:
         "figure.figsize": (12, 6),
         "axes.titlesize": 14,
         "axes.labelsize": 12,
+        "xtick.labelsize": 10,
+        "ytick.labelsize": 10,
     })
 
 

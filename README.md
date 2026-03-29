@@ -97,6 +97,10 @@ make setup      # Install dependencies
 make test       # Run pytest data validation
 make notebook   # Execute notebook top-to-bottom
 make clean      # Remove generated files
+
+## View the Analysis
+```bash
+jupyter notebook notebooks/analysis.ipynb
 ```
 
 ---

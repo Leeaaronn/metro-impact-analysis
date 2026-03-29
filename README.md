@@ -9,10 +9,23 @@ A causal inference study measuring whether the Gold Line Foothill Extension (ope
 ## Key Findings
 
 - The Foothill Extension increased Gold Line average weekday boardings by **+38,745 riders/day** relative to control lines (p < 0.001, 95% CI: [29,364, 48,126])
-- The effect is **large** (Cohen's d > 0.8) and robust across all four alternative specifications
-- **Parallel trends assumption holds** — treatment and control groups tracked similarly before March 2016, validating the DiD design
+- The effect is **large** (Cohen's d > 0.8) and holds across all four alternative specifications
+- **Parallel trends test** detected a significant pre-trend (p = 0.027), meaning the DiD estimate should be interpreted as strong suggestive evidence rather than definitive causal proof
 - Results survive excluding the Expo Line (concurrent extension), shifting the treatment window ±6 months, and extending through 2025 with COVID excluded
 - The 2018 Q2 system-wide data gap affects treatment and control equally — no bias introduced
+
+---
+
+## Results
+
+![Executive Summary](screenshots/executive_summary.png)
+
+![Treatment vs Control](screenshots/treatment_vs_control.png)
+*Gold Line diverged upward from control lines after the March 2016 extension opening.*
+
+![DiD Results](screenshots/did_results.png)
+
+![Robustness Checks](screenshots/robustness_summary.png)
 
 ---
 
@@ -97,8 +110,10 @@ make setup      # Install dependencies
 make test       # Run pytest data validation
 make notebook   # Execute notebook top-to-bottom
 make clean      # Remove generated files
+```
 
 ## View the Analysis
+
 ```bash
 jupyter notebook notebooks/analysis.ipynb
 ```
@@ -114,12 +129,14 @@ jupyter notebook notebooks/analysis.ipynb
 │   ├── stats.py         # Statistical tests (t-tests, DiD, effect sizes)
 │   └── viz.py           # Visualization helpers (seaborn + matplotlib)
 ├── tests/
-│   └── test_data.py     # Data validation tests (20 assertions)
+│   ├── test_data.py     # Data validation tests (20 assertions)
+│   └── test_stats.py    # Statistical function unit tests
 ├── notebooks/
 │   └── analysis.ipynb   # THE deliverable — polished analytical notebook
 ├── data/
 │   ├── raw/             # Downloaded source files (never modified)
 │   └── clean/           # Cleaned and standardized files
+├── screenshots/         # README figures
 ├── Makefile             # setup, test, notebook, all, clean
 ├── requirements.txt     # Pinned dependencies
 ├── data_inventory.md    # Documentation of all data files
@@ -136,6 +153,7 @@ jupyter notebook notebooks/analysis.ipynb
 
 - **Line-level data only** — station-level ridership not publicly available; analysis uses line aggregates
 - **Business proximity dropped** — SGV cities don't publish open business license data
+- **Parallel trends violated (p = 0.027)** — Gold Line was already diverging before March 2016; DiD estimate is suggestive, not conclusive
 - **Regional Connector (June 2023)** — merged Gold Line into A Line; primary analysis ends Dec 2019
 - **2018 Q2 data gap** — system-wide reporting gap, affects treatment and control equally
 - **COVID confounding** — pandemic disrupted all ridership post-March 2020; excluded from primary spec

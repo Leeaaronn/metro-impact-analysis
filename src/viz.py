@@ -287,7 +287,7 @@ def plot_boxplot_comparison(
     """
     set_default_theme()
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=df, x=x, y=y, order=order, ax=ax, palette="muted")
+    sns.boxplot(data=df, x=x, y=y, order=order, ax=ax, hue=x, palette="muted", legend=False)
     ax.set_title(title, fontweight="bold")
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:,.0f}"))
     fig.tight_layout()

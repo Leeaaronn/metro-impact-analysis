@@ -130,7 +130,7 @@ def plot_treatment_vs_control(
     df: pd.DataFrame,
     metric: str = "avg_daily_boardings",
     end_date: str = "2019-12-31",
-    title: str = "Treatment (Gold Line) vs Control Lines — Avg. Weekday Boardings",
+    title: str = "Treatment (Gold Line) vs Control Lines - Avg. Weekday Boardings",
 ) -> plt.Figure:
     """Plot aggregated treatment vs control group ridership over time.
 
